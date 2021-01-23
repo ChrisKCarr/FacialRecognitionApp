@@ -100,7 +100,11 @@ class App extends Component {
             body: JSON.stringify({
               id: this.state.user.id,
             }),
-          });
+          })
+            .then((response) => response.json())
+            .then((count) => {
+              this.setState(Object.assign(this.state.user, { entries: count }));
+            });
         }
         this.displayFaceBox(this.calculateFaceLocation(response));
       })
@@ -139,7 +143,7 @@ class App extends Component {
             <FaceRecognition box={box} imageUrl={imageUrl} />
           </div>
         ) : route === "signin" ? (
-          <SignIn onRouteChange={this.onRouteChange} />
+          <SignIn loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         ) : (
           <Register
             loadUser={this.loadUser}
